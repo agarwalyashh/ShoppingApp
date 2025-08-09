@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        // Use SafeArea to avoid notches and system UI overlaps
         child: Column(
           children: [
             Row(
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Expanded(
+                  // All remaining space will be used by the TextField
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Search',
