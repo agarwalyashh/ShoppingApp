@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/cart_provider.dart';
 import 'package:shopping_app/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,18 +13,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shopping App',
-      home: HomePage(),
-      theme: ThemeData(
-        useMaterial3: true,
-        textTheme: GoogleFonts.latoTextTheme(),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromRGBO(254, 206, 1, 1),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          prefixIconColor: Color.fromRGBO(119, 119, 119, 1),
+    return ChangeNotifierProvider(
+      create: (context) =>
+          CartProvider(), // value passed here can be used by all the descending widgets
+      child: MaterialApp(
+        title: 'Shopping App',
+        home: HomePage(),
+        theme: ThemeData(
+          useMaterial3: true,
+          textTheme: GoogleFonts.latoTextTheme(),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color.fromRGBO(254, 206, 1, 1),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            prefixIconColor: Color.fromRGBO(119, 119, 119, 1),
+          ),
         ),
       ),
     );

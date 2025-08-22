@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  final String title;
-  final double price;
-  final String image;
+  final Map<String, Object> product;
   final String index;
-  const ProductCard({
-    super.key,
-    required this.title,
-    required this.price,
-    required this.image,
-    required this.index,
-  });
+  const ProductCard({super.key, required this.product, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +21,21 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              product['title'].toString(),
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
             Text(
-              '\$$price',
+              '\$${product['price']}',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
-            Center(child: Image(image: AssetImage(image), height: 200)),
+            Center(
+              child: Image(
+                image: AssetImage(product['imageUrl'].toString()),
+                height: 200,
+              ),
+            ),
           ],
         ),
       ),

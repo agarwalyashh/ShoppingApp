@@ -1,47 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/cart_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  final String title;
-  final String image;
-  final double price;
-  final List<int> sizes;
-  const ProductDetailsPage({
-    super.key,
-    required this.title,
-    required this.image,
-    required this.sizes,
-    required this.price,
-  });
+  final Map<String, Object> product;
+  const ProductDetailsPage({super.key, required this.product});
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  late int size;
+  // late int size;
 
-  @override
-  void initState() {
-    super.initState();
-    size = widget.sizes[0]; // Default to the first size
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   size = widget.sizes[0]; // Default to the first size
+  // }
+
+  int selectedSize = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Details'), leading: Icon(Icons.arrow_back)),
+      appBar: AppBar(title: Text('Details')),
       body: Center(
         child: Column(
           children: [
             Center(
               child: Text(
-                widget.title,
+                widget.product['title'].toString(),
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
             ),
             Spacer(), // used for relative spacing
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Image(image: AssetImage(widget.image)),
+              child: Image(
+                image: AssetImage(widget.product['imageUrl'].toString()),
+                height: 250,
+              ),
             ),
             Spacer(flex: 2),
             Container(
@@ -55,7 +53,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 children: [
                   Center(
                     child: Text(
-                      '\$${widget.price}',
+                      '\$${widget.product['price']}',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -67,21 +65,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     height: 50,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.sizes.length,
+                      itemCount: (widget.product['sizes'] as List<int>).length,
                       itemBuilder: (context, index) {
+                        final size =
+                            (widget.product['sizes'] as List<int>)[index];
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                size = widget.sizes[index];
+                                selectedSize = size;
                               });
                             },
                             child: Chip(
-                              backgroundColor: size == widget.sizes[index]
+                              backgroundColor: selectedSize == size
                                   ? Color.fromRGBO(254, 206, 1, 1)
                                   : Colors.white,
-                              label: Text(widget.sizes[index].toString()),
+                              label: Text(size.toString()),
                             ),
                           ),
                         );
@@ -95,7 +95,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         backgroundColor: Color.fromRGBO(254, 206, 1, 1),
                         minimumSize: Size(double.infinity, 50),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<CartProvider>(
+                          context,
+                        ).addProduct(widget.product);
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
