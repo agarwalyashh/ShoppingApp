@@ -96,9 +96,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         minimumSize: Size(double.infinity, 50),
                       ),
                       onPressed: () {
-                        Provider.of<CartProvider>(
-                          context,
-                        ).addProduct(widget.product);
+                        if (selectedSize != 0) {
+                          Provider.of<CartProvider>(
+                            context,
+                            listen: false,
+                          ).addProduct({
+                            'id': widget.product['id'],
+                            'title': widget.product['title'],
+                            'price': widget.product['price'],
+                            'imageUrl': widget.product['imageUrl'],
+                            'company': widget.product['company'],
+                            'size': selectedSize,
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Product added successfully.'),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Please select a size!')),
+                          );
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
